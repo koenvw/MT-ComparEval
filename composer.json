@@ -35,10 +35,6 @@
 					"reference": "1.0.0"
 				}
 			}
-		},
-		"nette": {
-			"type": "vcs",
-			"url": "https://github.com/choko/nette"
 		}
 	}
 }
