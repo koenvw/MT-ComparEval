@@ -8,17 +8,21 @@ RUN apt-get update && \
     git \
     python
 
-COPY . /
 WORKDIR /
+
+COPY composer.json /
 
 RUN curl -sS https://getcomposer.org/installer | php
 RUN php composer.phar update --no-dev
-RUN chmod -R 777 temp log storage
+RUN mkdir data storage
+
+COPY schema.sql /
 RUN sqlite3 storage/database < schema.sql
-RUN mkdir data
 
 RUN echo 'max_execution_time=1200' >> /usr/local/etc/php/conf.d/timeout.ini
 RUN echo 'memory_limit=512M' >> /usr/local/etc/php/conf.d/memory.ini
+
+COPY . /
 
 ENTRYPOINT ["bin/watchAndServe.sh"]
 
