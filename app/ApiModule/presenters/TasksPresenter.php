@@ -42,12 +42,19 @@ class TasksPresenter extends BasePresenter {
 	public function renderUpload() {
 		$name = $this->getPostParameter( 'name' );
 		$url_key = \Nette\Utils\Strings::webalize( $name );
-		$description = $this->getPostParameter( 'description' );
+		$description = $this->getPostParameter( 'description', false );
 		$experiment_id = $this->getPostParameter( 'experiment_id', false );
 		$experiment_name = $this->getPostParameter( 'experiment_name', false );
 		$experiment_desc = $this->getPostParameter( 'experiment_description', false );
-		$experiment_url_key = \Nette\Utils\Strings::webalize( $experiment_name );
+		$experiment_url_key = \Nette\Utils\Strings::webalize( $experiment_name, false);
 		$translation = $this->getPostFile( 'translation' );
+
+		if(!$experiment_desc) {
+			$experiment_desc = "";
+		}
+		if(!$description) {
+			$description = "";
+		}
 
 		if($experiment_id) {
 			// Look up experiment by Id
@@ -57,11 +64,10 @@ class TasksPresenter extends BasePresenter {
 			// Lookup experiment by Name
 			$experiment = $this->experimentsModel->getExperimentByName( $experiment_url_key );
 			if( !$experiment ) {
-				Debugger::log("Experiment not found, creating", Debugger::INFO);
 				// Create new experiment
 				$data = array(
 					'name' => $experiment_name,
-					'description' => $this->getPostParameter( 'description' ),
+					'description' => $experiment_desc,
 					'url_key' => $experiment_url_key
 				);
 				$source = $this->getPostFile( 'source' );
