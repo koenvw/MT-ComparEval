@@ -137,7 +137,13 @@ A curl command to create a task:
 curl -X POST -F "name=task name" -F "description=description" -F "experiment_id=1" -F "translation=@translation.txt" http://localhost:8080/api/tasks/upload
 ```
 
+A curl command to create an experiment and a task together. The experiment wil be reused if it exists:
+```bash
+curl -X POST -F "name=task name" -F "description=description" -F "experiment_name=experiment name" -F "experiment_description=description" -F "source=@source.txt" -F "reference=@reference.txt" -F "translation=@translation.txt" http://localhost:8080/api/tasks/upload
+
 For deleting experiments via API use `api/experiments/delete/<id>`.
+
+
 
 ## How to remove a task manually
 
